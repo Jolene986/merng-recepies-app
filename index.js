@@ -8,14 +8,27 @@ const { MONGODB } = require('./config');
 
 const typeDefs = gql`
   #setup queryes and what they return
+  type Post {
+    id: ID!
+    body: String!
+    username: String!
+    createdAt: String!
+  }
   type Query {
-    
+    getPosts: [Post]
   }
 `;
 
 const resolvers = {
   Query: {
-    sayHi: () => 'helo everyone',
+    getPosts: async () => {
+      try {
+        const posts = await Post.find(); // finds all
+        return posts;
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
   },
 };
 
