@@ -1,4 +1,4 @@
-const gql = require('graphql-tag');
+const gql = require("graphql-tag");
 
 module.exports = gql`
   #setup queries and what they return
@@ -28,5 +28,6 @@ module.exports = gql`
 
   type Mutation {
     register(registerInput: RegisterInput): User! #This mutation returns type user
+    login(username: String!, password: String!): User!
   }
 `;
