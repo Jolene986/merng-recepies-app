@@ -25,5 +25,21 @@ module.exports = {
         return post;
       } else throw new UserInputError("Post not found");
     },
+    deleteComment: async (_, { postId, commentId }, context) => {
+      const { username } = checkAuth(context);
+      const post = await Post.findById(postId);
+      if (post) {
+        const commentIdx = post.comments.findIndex((c) => c.id === commentId);
+        if (post.comments[commentIdx].username === username) {
+          post.comments.splice(commentIdx, 1);
+          await post.save();
+          return post;
+        } else {
+          throw new AuthenticationError("Action forbiden");
+        }
+      } else {
+        throw new UserInputError("Post not found");
+      }
+    },
   },
 };

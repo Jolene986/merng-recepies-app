@@ -18,18 +18,23 @@ module.exports = gql`
     comments: [Comment]!
     likes: [Like]!
   }
-  type Comment {
-    id: ID!
-    username: String!
-    body: String!
-    createdAt: String!
-  }
   type Like {
     id: ID!
     username: String!
     createdAt: String!
   }
-
+  type Comment {
+    id: ID!
+    username: String!
+    body: String!
+    createdAt: String!
+    likes: [CommentLike]!
+  }
+  type CommentLike {
+    id: ID!
+    username: String!
+    createdAt: String!
+  }
   input RegisterInput {
     username: String!
     password: String!
