@@ -41,5 +41,27 @@ module.exports = {
         throw new UserInputError("Post not found");
       }
     },
+    likeComment: async (_, { postId, commentId }, context) => {
+      const { username } = checkAuth(context);
+      const post = await Post.findById(postId);
+      const comment = post.comments.find((comment) => comment.id === commentId);
+
+      if (comment) {
+        if (comment.commentLikes.find((like) => like.username === username)) {
+          // Comment already liked => unlike it
+          comment.commentLikes = comment.commentLikes.filter(
+            (like) => like.username !== username
+          );
+        } else {
+          //Comment not liked => like it
+          comment.commentLikes.push({
+            username: username,
+            createdAt: new Date().toISOString(),
+          });
+        }
+        await post.save();
+        return post;
+      } else throw new UserInputError("Comment not found");
+    },
   },
 };
