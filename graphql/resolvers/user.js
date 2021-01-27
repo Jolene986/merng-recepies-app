@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { UserInputError } = require("apollo-server");
 
 const User = require("../../models/User");
+const Post = require("../../models/Post");
 const { SECRET_KEY } = require("../../config");
 const {
   validateRegisterInput,
@@ -22,6 +23,24 @@ function generateToken(user) {
 }
 
 module.exports = {
+  Query: {
+    //Get one user
+    getUser: async (_, { userId }) => {
+      try {
+        const user = await User.findById(userId);
+        if (user) {
+          const posts = await Post.find();
+          userPosts = posts.filter((post) => post.username === user.username);
+          user.posts = userPosts;
+          return user;
+        } else {
+          throw new Error("User not found");
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+  },
   Mutation: {
     //REGISTER
     async register(

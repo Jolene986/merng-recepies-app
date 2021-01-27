@@ -9,6 +9,7 @@ module.exports = gql`
     email: String!
     token: String!
     createdAt: String!
+    posts: [Post]!
   }
   type Post {
     id: ID!
@@ -68,6 +69,7 @@ module.exports = gql`
   type Query {
     getPosts: [Post]
     getPost(postId: ID!): Post
+    getUser(userId: ID!): User
   }
 
   type Mutation {
