@@ -9,6 +9,7 @@ const {
   validateRegisterInput,
   validateLoginInput,
 } = require("../../utils/validation");
+const { populate } = require("../../models/Post");
 
 function generateToken(user) {
   return jwt.sign(
@@ -27,11 +28,15 @@ module.exports = {
     //Get one user
     getUser: async (_, { userId }) => {
       try {
-        const user = await User.findById(userId);
+        //get user and populate favorites array
+        const user = await User.findById(userId).populate("favorites");
+
         if (user) {
+          //Get posts by this user
           const posts = await Post.find();
           userPosts = posts.filter((post) => post.username === user.username);
           user.posts = userPosts;
+
           return user;
         } else {
           throw new Error("User not found");

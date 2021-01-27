@@ -10,6 +10,7 @@ const postSchema = new Schema({
   category: String,
   username: String,
   createdAt: String,
+  favCount: Number,
   comments: [
     {
       body: String,
@@ -32,7 +33,7 @@ const postSchema = new Schema({
   user: {
     //posts rel with the user
     type: Schema.Types.ObjectId,
-    ref: "users",
+    ref: "User",
   },
 });
 

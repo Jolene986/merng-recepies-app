@@ -10,6 +10,7 @@ module.exports = gql`
     token: String!
     createdAt: String!
     posts: [Post]!
+    favorites: [Post]!
   }
   type Post {
     id: ID!
@@ -24,6 +25,7 @@ module.exports = gql`
     createdAt: String!
     comments: [Comment]!
     likes: [Like]!
+    favCount: Int!
   }
   type Like {
     id: ID!
@@ -83,5 +85,6 @@ module.exports = gql`
     deleteComment(postId: ID!, commentId: ID!): Post!
     likeComment(postId: ID!, commentId: ID!): Post!
     editComment(postId: ID!, commentId: ID!, body: String!): Post!
+    addToFavorites(postId: ID!): Post!
   }
 `;

@@ -5,6 +5,12 @@ const userSchema = new Schema({
   password: String,
   email: String,
   createdAt: String,
+  favorites: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
 });
 
 module.exports = model("User", userSchema);

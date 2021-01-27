@@ -1,6 +1,7 @@
 const { AuthenticationError, UserInputError } = require("apollo-server");
 
 const Post = require("../../models/Post");
+const User = require("../../models/User");
 const checkAuth = require("../../utils/checkAuth");
 
 module.exports = {
@@ -54,6 +55,7 @@ module.exports = {
         ingredients,
         prepSteps,
         category,
+        favCount: 0,
         user: user.id,
         username: user.username,
         createdAt: new Date().toISOString(),
@@ -105,6 +107,26 @@ module.exports = {
           Object.keys(editInput).forEach(
             (value) => (post[value] = editInput[value])
           );
+          await post.save();
+          return post;
+        } else {
+          throw new AuthenticationError("Action forbiden");
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    addToFavorites: async (_, { postId }, context) => {
+      const logedInuser = checkAuth(context);
+
+      try {
+        const post = await Post.findById(postId);
+        const user = await User.findById(logedInuser.id);
+
+        if (post) {
+          user.favorites.push(postId);
+          await user.save();
+          post.favCount += 1;
           await post.save();
           return post;
         } else {
