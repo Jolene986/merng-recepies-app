@@ -76,5 +76,23 @@ module.exports = {
         return post;
       } else throw new UserInputError("Post not found");
     },
+    //EDIT POST
+    editPost: async (_, { postId, editInput }, context) => {
+      const user = checkAuth(context);
+      try {
+        const post = await Post.findById(postId);
+        if (user.username === post.username) {
+          Object.keys(editInput).forEach(
+            (value) => (post[value] = editInput[value])
+          );
+          await post.save();
+          return post;
+        } else {
+          throw new AuthenticationError("Action forbiden");
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
   },
 };
