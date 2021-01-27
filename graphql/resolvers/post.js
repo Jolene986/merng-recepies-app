@@ -30,10 +30,30 @@ module.exports = {
   },
   Mutation: {
     // CREATE NEW POST
-    createPost: async (_, { body }, context) => {
+    createPost: async (
+      _,
+      {
+        createInput: {
+          title,
+          prepTime,
+          imageUrl,
+          description,
+          ingredients,
+          prepSteps,
+          category,
+        },
+      },
+      context
+    ) => {
       const user = checkAuth(context);
       const newPost = new Post({
-        body,
+        title,
+        prepTime,
+        imageUrl,
+        description,
+        ingredients,
+        prepSteps,
+        category,
         user: user.id,
         username: user.username,
         createdAt: new Date().toISOString(),

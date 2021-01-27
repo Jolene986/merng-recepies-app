@@ -12,7 +12,13 @@ module.exports = gql`
   }
   type Post {
     id: ID!
-    body: String!
+    title: String!
+    prepTime: String!
+    imageUrl: String!
+    description: String!
+    ingredients: [String]!
+    prepSteps: [String]!
+    category: String!
     username: String!
     createdAt: String!
     comments: [Comment]!
@@ -41,8 +47,23 @@ module.exports = gql`
     confirmPassword: String!
     email: String!
   }
+  input CreateInput {
+    title: String!
+    prepTime: String!
+    imageUrl: String!
+    description: String!
+    ingredients: [String]!
+    prepSteps: [String]!
+    category: String!
+  }
   input EditInput {
-    body: String!
+    title: String
+    prepTime: String
+    imageUrl: String
+    description: String
+    ingredients: [String]
+    prepSteps: [String]
+    category: String
   }
   type Query {
     getPosts: [Post]
@@ -52,10 +73,10 @@ module.exports = gql`
   type Mutation {
     register(registerInput: RegisterInput): User! #This mutation returns type user
     login(username: String!, password: String!): User!
-    createPost(body: String!): Post!
+    createPost(createInput: CreateInput): Post!
     deletePost(postId: ID!): String!
     likePost(postId: ID!): Post!
-    editPost(postId: ID!, editInput: EditInput): Post!
+    editPost(postId: ID!, editInput: EditInput!): Post!
     createComment(postId: String!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likeComment(postId: ID!, commentId: ID!): Post!
