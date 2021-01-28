@@ -7,7 +7,7 @@ const checkAuth = require("../../utils/checkAuth");
 module.exports = {
   Query: {
     //GET ALL POSTS
-    getPosts: async () => {
+    posts: async () => {
       try {
         const posts = await Post.find().sort({ createdAt: -1 }); // finds all
         return posts;
@@ -16,7 +16,7 @@ module.exports = {
       }
     },
     //GET ONE POST
-    getPost: async (_, { postId }) => {
+    post: async (_, { postId }) => {
       try {
         const post = await Post.findById(postId);
         if (post) {

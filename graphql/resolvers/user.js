@@ -26,7 +26,7 @@ function generateToken(user) {
 module.exports = {
   Query: {
     //Get one user
-    getUser: async (_, { userId }) => {
+    user: async (_, { userId }) => {
       try {
         //get user and populate favorites array
         const user = await User.findById(userId).populate("favorites");

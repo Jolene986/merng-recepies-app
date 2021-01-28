@@ -69,9 +69,9 @@ module.exports = gql`
     category: String
   }
   type Query {
-    getPosts: [Post]
-    getPost(postId: ID!): Post
-    getUser(userId: ID!): User
+    posts: [Post]
+    post(postId: ID!): Post
+    user(userId: ID!): User
   }
 
   type Mutation {

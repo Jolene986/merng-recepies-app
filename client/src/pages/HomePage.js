@@ -12,7 +12,7 @@ const HomePage = () => {
 
   return (
     <div>
-      {data.getPosts.map(({ title, id }) => (
+      {data.posts.map(({ title, id }) => (
         <h1 key={id}>{title}</h1>
       ))}
     </div>
