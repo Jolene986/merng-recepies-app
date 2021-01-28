@@ -54,24 +54,29 @@ module.exports = gql`
     title: String!
     prepTime: String!
     imageUrl: String!
+    videoUrl: String!
     description: String!
     ingredients: [String]!
     prepSteps: [String]!
     category: String!
+    notes: String!
   }
   input EditInput {
     title: String
     prepTime: String
     imageUrl: String
+    videoUrl: String
     description: String
     ingredients: [String]
     prepSteps: [String]
     category: String
+    notes: String
   }
   type Query {
     posts: [Post]
-    post(postId: ID!): Post
-    user(userId: ID!): User
+    post(postId: ID!): Post!
+    user(userId: ID!): User!
+    searchPosts(search: String): [Post]
   }
 
   type Mutation {

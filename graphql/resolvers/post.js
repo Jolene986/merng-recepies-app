@@ -10,6 +10,7 @@ module.exports = {
     posts: async () => {
       try {
         const posts = await Post.find().sort({ createdAt: -1 }); // finds all
+        console.log(posts);
         return posts;
       } catch (err) {
         throw new Error(err);
@@ -24,6 +25,19 @@ module.exports = {
         } else {
           throw new Error("Post not found");
         }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    searchPosts: async (_, { search }) => {
+      try {
+        const posts = await Post.find();
+        const filteredPosts = posts.filter(
+          (post) =>
+            post.title.toLowerCase().includes(search) ||
+            post.category.toLowerCase().includes(search)
+        );
+        return filteredPosts;
       } catch (err) {
         throw new Error(err);
       }
@@ -51,11 +65,13 @@ module.exports = {
         title,
         prepTime,
         imageUrl,
+        videoUrl,
         description,
         ingredients,
         prepSteps,
         category,
         favCount: 0,
+        notes,
         user: user.id,
         username: user.username,
         createdAt: new Date().toISOString(),
