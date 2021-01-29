@@ -165,9 +165,20 @@ module.exports = {
         const user = await User.findById(logedInuser.id);
 
         if (post) {
-          user.favorites.push(postId);
+          // if already favorite => remove it
+
+          console.log(user.favorites.find((el) => el == postId)); // postId is Int so shalow comparison
+
+          if (user.favorites.find((el) => el == postId)) {
+            user.favorites = user.favorites.filter((el) => el != postId);
+            post.favCount -= 1;
+          } else {
+            //add it to favorites
+            user.favorites.push(postId);
+            post.favCount += 1;
+          }
+
           await user.save();
-          post.favCount += 1;
           await post.save();
           return post;
         } else {
