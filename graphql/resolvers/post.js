@@ -1,4 +1,5 @@
 const { AuthenticationError, UserInputError } = require("apollo-server");
+const { paginateResults } = require("../../utils/pagination");
 
 const Post = require("../../models/Post");
 const User = require("../../models/User");
@@ -7,11 +8,24 @@ const checkAuth = require("../../utils/checkAuth");
 module.exports = {
   Query: {
     //GET ALL POSTS
-    posts: async () => {
+    posts: async (_, { pageSize = 10, after }) => {
       try {
-        const posts = await Post.find().sort({ createdAt: -1 }); // finds all
-        console.log(posts);
-        return posts;
+        const allPosts = await Post.find().sort({ createdAt: -1 }); // finds all
+        const posts = paginateResults({
+          after,
+          pageSize,
+          results: allPosts,
+        });
+        return {
+          posts,
+          cursor: posts.length ? posts[posts.length - 1].cursor : null,
+          // if the cursor of the end of the paginated results is the same as the
+          // last item in _all_ results, then there are no more results after this
+          hasMore: posts.length
+            ? posts[posts.length - 1].cursor !==
+              allPosts[allPosts.length - 1].cursor
+            : false,
+        };
       } catch (err) {
         throw new Error(err);
       }
@@ -52,9 +66,11 @@ module.exports = {
           title,
           prepTime,
           imageUrl,
+          videoUrl,
           description,
           ingredients,
           prepSteps,
+          notes,
           category,
         },
       },
@@ -75,6 +91,7 @@ module.exports = {
         user: user.id,
         username: user.username,
         createdAt: new Date().toISOString(),
+        cursor: new Date().getTime(),
       });
       const post = await newPost.save();
       return post;

@@ -23,6 +23,7 @@ module.exports = gql`
     category: String!
     username: String!
     createdAt: String!
+    cursor: String!
     comments: [Comment]!
     likes: [Like]!
     favCount: Int!
@@ -73,10 +74,25 @@ module.exports = gql`
     notes: String
   }
   type Query {
-    posts: [Post]
+    #posts: [Post]
+    posts(
+      """
+      The number of results to show. Must be >= 1. Default = 20
+      """
+      pageSize: Int
+      """
+      If you add a cursor here, it will only return results _after_ this cursor
+      """
+      after: String
+    ): PostConnection!
     post(postId: ID!): Post!
     user(userId: ID!): User!
     searchPosts(search: String): [Post]
+  }
+  type PostConnection {
+    cursor: String!
+    hasMore: Boolean!
+    posts: [Post]!
   }
 
   type Mutation {

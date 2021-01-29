@@ -13,6 +13,7 @@ const postSchema = new Schema({
   username: String,
   createdAt: String,
   favCount: Number,
+  cursor: String,
   comments: [
     {
       body: String,
