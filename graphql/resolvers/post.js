@@ -8,7 +8,7 @@ const checkAuth = require("../../utils/checkAuth");
 module.exports = {
   Query: {
     //GET ALL POSTS
-    posts: async (_, { pageSize = 10, after }) => {
+    posts: async (_, { pageSize = 6, after }) => {
       try {
         const allPosts = await Post.find().sort({ createdAt: -1 }); // finds all
         const posts = paginateResults({

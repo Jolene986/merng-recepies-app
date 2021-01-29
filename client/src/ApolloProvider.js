@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  HttpLink,
-  from,
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, HttpLink, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+import { cache } from "./cache";
 
 import App from "./App";
 
@@ -27,10 +22,9 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
 const link = from([errorLink, new HttpLink({ uri: "http://localhost:5000" })]);
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: cache,
   link: link,
 });
-
 const MyApolloProvider = () => (
   <ApolloProvider client={client}>
     <App />
