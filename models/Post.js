@@ -13,6 +13,7 @@ const postSchema = new Schema({
   username: String,
   createdAt: String,
   favCount: Number,
+  averageRating: Number,
   cursor: String,
   comments: [
     {
@@ -27,10 +28,11 @@ const postSchema = new Schema({
       ],
     },
   ],
-  likes: [
+  ratings: [
     {
       username: String,
       createdAt: String,
+      value: Number,
     },
   ],
   user: {

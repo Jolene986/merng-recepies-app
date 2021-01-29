@@ -26,6 +26,7 @@ module.exports = gql`
     cursor: String!
     comments: [Comment]!
     ratings: [Rating]!
+    averageRating: Float!
     favCount: Int!
   }
   type Rating {

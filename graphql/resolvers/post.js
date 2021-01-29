@@ -111,22 +111,30 @@ module.exports = {
         throw new Error(err);
       }
     },
-    likePost: async (_, { postId }, context) => {
+    ratePost: async (_, { postId, value }, context) => {
       const { username } = checkAuth(context);
 
       const post = await Post.findById(postId);
       if (post) {
-        if (post.likes.find((like) => like.username === username)) {
-          // Post already liked => unlike it
-          post.likes = post.likes.filter((like) => like.username !== username);
+        if (post.ratings.find((rating) => rating.username === username)) {
+          // Post already rated => change it
+          post.ratings.find(
+            (rating) => rating.username === username
+          ).value = value;
         } else {
-          // Not liked => like post
-          post.likes.push({
+          // Not rated => rate post
+          post.ratings.push({
             username: username,
+            value: value,
             createdAt: new Date().toISOString(),
           });
         }
+        let averageRating =
+          post.ratings.reduce((acc, item) => {
+            return (acc += item.value);
+          }, 0) / post.ratings.length;
 
+        post.averageRating = averageRating;
         await post.save();
         return post;
       } else throw new UserInputError("Post not found");
