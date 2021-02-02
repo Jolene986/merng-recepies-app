@@ -1,6 +1,6 @@
 # merng-social-media-app
 
-Following a Free Code Camp Tutorial to create a social media app using
+Recepies app
 MongoDB,
 Express,
 React,
